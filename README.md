@@ -1,1 +1,3 @@
 Simple Snake Game 
+
+In this game the player control the snake. The player simply use the up,down,left,right,arrow keys to move the “SNAKE” around the board and control a snake.As the snake finds foods, it eats the food,and thereby grows longer.Ensure you do not tangle up yourself and hit your own snake body accidentally.The game ends when the snake hit into itself. The Goal of this game is to make the snake as large as possible.
