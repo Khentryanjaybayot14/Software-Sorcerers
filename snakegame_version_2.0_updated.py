@@ -110,7 +110,10 @@ cfont = pygame.font.SysFont("Agency fb", 45)
 click_me = ui.blit(cfont.render("Click me to continue", True, color_), (160,225))
 click_me1 = ui.blit(cfont.render("Click space to continue", True, color_1), (900, 230))
 
+
+    
 ############################################################################################################
+
 run = True
 while run:
     for event in pygame.event.get():
@@ -326,11 +329,13 @@ class Game:
     def render_background(self):
         self.bg = pygame.image.load("D:/snakegame_materials/background.jpg")
         self.surface.blit(self.bg, (0,0))
+        self.level()
         pygame.display.flip()
+
 
     def level(self):
         if self.snake.length >= 5 and self.snake.length <= 10:
-            self.surface.fill(green)
+            self.surface.fill(blue)
             
         if self.snake.length1 >= 5 and self.snake.length1 <= 10:
             self.surface.fill(blue_green)
@@ -341,19 +346,25 @@ class Game:
             self.surface.fill(violet)
 
         if self.snake.length > 20 and self.snake.length <= 30:
-            self.surface.fill(blue)
+            self.surface.fill(green)
         if self.snake.length1 > 20 and self.snake.length1 <= 30:
             self.surface.fill(black)
-        pygame.display.flip()
+        
+        if self.snake.length > 30 and self.snake.length <= 40:
+            self.surface.fill((102,102,255))#light blue
+        if self.snake.length1 > 30 and self.snake.length1 <= 40:
+            self.surface.fill((153,255,153)) #light green
+
+        if self.snake.length > 40 and self.snake.length <= 50:
+            self.surface.fill((255, 128, 0))#orange
+        if self.snake.length1 > 40 and self.snake.length1 <= 50:
+            self.surface.fill((160,160,160)) #gray
 
     def f(self):
         if self.is_collision(self.snake.block_x[0], self.snake.block_y[0], self.snake.block_x1[0], self.snake.block_y1[0]):
             sound = pygame.mixer.Sound("D:/snakegame_materials/crash.mp3")
             pygame.mixer.Sound.play(sound)
             raise "collide with other snake"
-
-    
-
 
     def play(self):
         self.render_background()
@@ -371,9 +382,9 @@ class Game:
         
     def display_score(self):
         font = pygame.font.SysFont("Arial", 20)
-        self.score = font.render(f"Yellow Snake {self.snake.length - 1}", True, (255,255,255))
+        self.score = font.render(f"Yellow Snake {self.snake.length1}", True, (255,255,255))
         self.surface.blit(self.score, (170, 10))
-        self.score1 = font.render(f"Blue Snake {self.snake.length1}", True, (255,255,255))
+        self.score1 = font.render(f"Blue Snake {self.snake.length - 1}", True, (255,255,255))
         self.surface.blit(self.score1, (1000, 10))
 
     def show_game_over(self):
@@ -408,8 +419,8 @@ class Game:
 
 
     def run(self):
-        running = False
-        pause = False
+        self.running = False
+        self.pause = False
         howtoloop = True
         
         font2 = pygame.font.SysFont('Agency fb', 30)
@@ -460,7 +471,7 @@ class Game:
                     pos1 = event.pos
                     if clickme.collidepoint(pos1):
                         howtoloop = False
-                        running = True
+                        self.running = True
                         pygame.mixer.music.play()
 
 
@@ -470,19 +481,19 @@ class Game:
                     if event.key == K_SPACE:
                         pygame.mixer.music.play()
                         howtoloop = False
-                        running = True
+                        self.running = True
                 
                         
-        while running:
+        while self.running:
             for event in pygame.event.get():
                 if event.type == KEYDOWN:
                     if event.key == K_ESCAPE:
-                        running = False
+                        self.running = False
 
                     if event.key == K_RETURN:
-                        pause = False
+                        self.pause = False
                         pygame.mixer.music.play()
-                    if not pause:
+                    if not self.pause:
                         if event.key == K_s:
                             self.snake.move_down()
                         if event.key == K_w:
@@ -503,17 +514,17 @@ class Game:
 
                     if event.key == K_SPACE:
                         self.text_pause()
-                        pause = True
+                        self.pause = True
                         pygame.mixer.music.pause()
 
                 elif event.type == QUIT:
-                    running = False
+                    self.running = False
             try:
-                if not pause:
+                if not self.pause:
                     self.play()
             except Exception as e:
                 self.show_game_over()
-                pause = True
+                self.pause = True
                 self.reset()
                 
             self.Time()      
