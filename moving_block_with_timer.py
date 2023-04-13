@@ -1,5 +1,6 @@
 import pygame
 from pygame.locals import *
+import time
 
 
 class Snake:
@@ -8,10 +9,12 @@ class Snake:
         self.yellow_snake = pygame.image.load("D:/snakegame_materials/yellow_snake.jpg")
         self.yellow_snake_x = 400
         self.yellow_snake_y = 50
+        self.direction1 = "down"
         
         self.blue_snake = pygame.image.load("D:/snakegame_materials/blue_snake.png")
         self.blue_snake_x = 50
         self.blue_snake_y = 50
+        self.direction = "down"
     def draw(self):
         self.parent_screen.fill((0,0,0))
         self.parent_screen.blit(self.blue_snake, (self.blue_snake_x, self.blue_snake_y))
@@ -19,29 +22,42 @@ class Snake:
         pygame.display.flip()
 
     def move_up(self):
-        self.blue_snake_y -= 10
-        self.draw()
+        self.direction = "up"
     def move_down(self):
-        self.blue_snake_y += 10
-        self.draw()
+        self.direction = "down"
     def move_left(self):
-        self.blue_snake_x -= 10
-        self.draw()
+        self.direction = "left"
     def move_right(self):
-        self.blue_snake_x += 10
-        self.draw()
+        self.direction = "right"
 
     def move_up1(self):
-        self.yellow_snake_y -= 10
-        self.draw()
+        self.direction1 = "up"
     def move_down1(self):
-        self.yellow_snake_y += 10
-        self.draw()
+        self.direction1 = "down"
     def move_left1(self):
-        self.yellow_snake_x -= 10
-        self.draw()
+        self.direction1 = "left"
     def move_right1(self):
-        self.yellow_snake_x += 10
+        self.direction1 = "right"
+
+    def walk(self):
+        if self.direction == "up":
+            self.yellow_snake_y -= 10
+        if self.direction == "down":
+            self.yellow_snake_y += 10
+        if self.direction == "left":
+            self.yellow_snake_x -= 10
+        if self.direction == "right":
+            self.yellow_snake_x += 10
+
+        if self.direction1 == "up":
+            self.blue_snake_y -= 10
+        if self.direction1 == "down":
+            self.blue_snake_y += 10
+        if self.direction1 == "left":
+            self.blue_snake_x -= 10
+        if self.direction1 == "right":
+            self.blue_snake_x += 10
+        
         self.draw()
 
 class Game:
@@ -61,26 +77,28 @@ class Game:
                         running = False
 
                     if event.key == K_w:
-                        self.snake.move_up()
+                        self.snake.move_up1()
                     if event.key == K_s:
-                        self.snake.move_down()
+                        self.snake.move_down1()
                     if event.key == K_a:
-                        self.snake.move_left()
+                        self.snake.move_left1()
                     if event.key == K_d:
-                        self.snake.move_right()
+                        self.snake.move_right1()
 
                     if event.key == K_UP:
-                        self.snake.move_up1()
+                        self.snake.move_up()
                     if event.key == K_DOWN:
-                        self.snake.move_down1()
+                        self.snake.move_down()
                     if event.key == K_LEFT:
-                        self.snake.move_left1()
+                        self.snake.move_left()
                     if event.key == K_RIGHT:
-                        self.snake.move_right1()
+                        self.snake.move_right()
 
                 elif event.type == QUIT:
                     running = False
-
+        
+            self.snake.walk()
+            time.sleep(.3)
 
 if __name__ == "__main__":
     game = Game()
